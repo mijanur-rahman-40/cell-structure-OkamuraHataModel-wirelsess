@@ -2,6 +2,9 @@ from Tkinter import *
 import ttk
 from src.HataModel import OkamuraHataModel
 
+# import sys
+# from os import path
+# sys.path.append('../src')
 # intiate tkinter
 root = Tk()
 root.title('Okumara/Hata model to predict the path loss')
