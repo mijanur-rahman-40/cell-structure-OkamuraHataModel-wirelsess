@@ -35,81 +35,81 @@ selectedCityValue = IntVar(value=1)
 selectedAreaValue = IntVar(value=1)
 
 
+headingfontTypeAndSize = ('Helvetica', 20)
+# labels
+labelsfontTypeAndSize = ('Times new Roman', 14)
+
+# text filed
+textFiledFont = ('Times new Roman', 15, 'bold')
+
 # Heading
-ttk.Label(root,
-          text='Enter the all specified values',
-          font=('Helvetica', 20),
-          foreground="blue").grid(column=1, row=5, padx=20, pady=20)
+labelHeading = Label(root,
+                     text='Enter the all specified values',
+                     font=headingfontTypeAndSize,
+                     foreground="blue")
 
 # carrier frequency
-ttk.Label(root,
-          anchor="e",
-          justify=LEFT,
-          text='Value of carrier frequency(150-1500 in MHz)        :',
-          font=('Times new Roman', 14),
-          foreground="black").grid(column=1, row=6, padx=20, pady=10)
+labelCarrierFrequency = Label(root,
+                              text='Value of carrier frequency(150-1500 in MHz)        :',
+                              font=labelsfontTypeAndSize,
+                              foreground="black")
 
 carrierFrequencyField = ttk.Entry(root,
                                   width=16,
                                   textvariable=carrierFrequency,
                                   justify=CENTER,
-                                  font=('Times new Roman', 15, 'bold'))
+                                  font=textFiledFont)
 
 carrierFrequencyField.focus_force()
-carrierFrequencyField.grid(column=2, row=6)
-
 
 # height of transmitter antenna
-ttk.Label(root,
-          text='Height of transmitter antenna(30 - 300 in meter)    :',
-          font=('Times new Roman', 14),
-          foreground="black").grid(column=1, row=7, padx=20, pady=10)
+labelantennaheightT = Label(root,
+                            text='Height of transmitter antenna(30 - 300 in meter)    :',
+                            font=labelsfontTypeAndSize,
+                            foreground="black")
 
 antennaheightFieldT = ttk.Entry(root,
                                 width=16,
                                 textvariable=antennaheightT,
                                 justify=CENTER,
-                                font=('Times new Roman', 15, 'bold'))
+                                font=textFiledFont)
 
 antennaheightFieldT.focus_force()
-antennaheightFieldT.grid(column=2, row=7)
 
 # height of receiver antenna
-ttk.Label(root,
-          text='Height of receiver antenna (1 - 10 in meter)           :',
-          font=('Times new Roman', 14),
-          foreground="black").grid(column=1, row=8, padx=20, pady=10)
+labelAntennaheightR = Label(root,
+                            text='Height of receiver antenna (1 - 10 in meter)           :',
+                            font=labelsfontTypeAndSize,
+                            foreground="black")
 
 antennaheightFieldR = ttk.Entry(root,
                                 width=16,
                                 textvariable=antennaheightR,
                                 justify=CENTER,
-                                font=('Times new Roman', 15, 'bold'))
+                                font=textFiledFont)
 
 antennaheightFieldR.focus_force()
-antennaheightFieldR.grid(column=2, row=8)
 
 # Propagation distance
-ttk.Label(root,
-          text='Propagation distance between antennas (1 - 20 in km) :',
-          font=('Times new Roman', 14),
-          foreground="black").grid(column=1, row=9, padx=20, pady=10)
+labelPropagationDistance = Label(root,
+                                 text='Propagation distance between antennas (1 - 20 in km) :',
+                                 font=labelsfontTypeAndSize,
+                                 foreground="black")
 
 propagationDistanceField = ttk.Entry(root,
                                      width=16,
                                      textvariable=propagationDistance,
                                      justify=CENTER,
-                                     font=('Times new Roman', 15, 'bold'))
+                                     font=textFiledFont)
 
 propagationDistanceField.focus_force()
-propagationDistanceField.grid(column=2, row=9)
 
 
 # Option menu of type of city
-ttk.Label(root,
-          text='Select the type of city',
-          font=('Times new Roman', 15),
-          foreground="black").grid(column=1, row=10, padx=20, pady=20)
+labelCityType = Label(root,
+                      text='Select the type of city',
+                      font=labelsfontTypeAndSize,
+                      foreground="black")
 
 cityOptions = ['Small/Medium', 'Large']
 
@@ -126,14 +126,13 @@ cityTypeOptionsMenu = OptionMenu(
     command=citySelected)
 
 cityTypeOptionsMenu.config(width=15)
-cityTypeOptionsMenu.grid(column=2, row=10)
 
 
 # Option menu of type of area
-ttk.Label(root,
-          text='Select the type of area',
-          font=('Times new Roman', 15),
-          foreground="black").grid(column=1, row=11, padx=20, pady=20)
+labelAreaType = Label(root,
+                      text='Select the type of area',
+                      font=labelsfontTypeAndSize,
+                      foreground="black")
 
 areaOptions = ['Urban/Suburban', 'Open area']
 
@@ -151,7 +150,6 @@ areaTypeOptionsMenu = OptionMenu(
     command=areaSelected)
 
 areaTypeOptionsMenu.config(width=15)
-areaTypeOptionsMenu.grid(column=2, row=11)
 
 
 def getPathLoss():
@@ -165,14 +163,25 @@ def getPathLoss():
     )
 
     ttk.Label(root,
-              text="Path loss (in dB):" + str(okamura_hata_model.pathLoss) + 'dB',
-              font=('Helvetica', 20),
+              text="Path loss (in dB):" +
+              str(okamura_hata_model.pathLoss) + 'dB',
+              font=textFiledFont,
               foreground="black").grid(column=1, row=12, padx=20, pady=20)
 
 
 myButton = Button(root, text='Get Path Loss',
-                  command=getPathLoss, padx=10, fg='white', bg='blue')
-myButton.grid(column=1, row=15)
+                  command=getPathLoss, fg='white', bg='blue', font=labelsfontTypeAndSize)
 
+labels = [labelHeading, labelCarrierFrequency, labelantennaheightT,
+          labelAntennaheightR, labelPropagationDistance, labelCityType, labelAreaType, myButton]
+
+fields = [carrierFrequencyField, antennaheightFieldT,
+          antennaheightFieldR, propagationDistanceField, cityTypeOptionsMenu, areaTypeOptionsMenu]
+
+for i in range(8):
+    labels[i].grid(row=i, column=1, sticky='W', padx=20, pady=10)
+
+for i in range(6):
+    fields[i].grid(row=i + 1, column=2)
 
 root.mainloop()
