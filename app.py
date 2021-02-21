@@ -1,6 +1,6 @@
 from Tkinter import *
 import ttk
-
+from src.HataModel import OkamuraHataModel
 
 # intiate tkinter
 root = Tk()
@@ -31,6 +31,9 @@ antennaheightR = StringVar()
 propagationDistance = StringVar()
 selectedCity = StringVar()
 selectedArea = StringVar()
+selectedCityValue = IntVar(value=1)
+selectedAreaValue = IntVar(value=1)
+
 
 # Heading
 ttk.Label(root,
@@ -110,15 +113,12 @@ ttk.Label(root,
 
 cityOptions = ['Small/Medium', 'Large']
 
-selectedCityValue = ''
-
 
 def citySelected(event):
-    selectedCityValue = selectedCity.get()
+    selectedCityValue.set(1 if selectedCity.get() == 'Small/Medium' else 2)
 
 
 selectedCity.set(cityOptions[0])
-
 cityTypeOptionsMenu = OptionMenu(
     root,
     selectedCity,
@@ -137,11 +137,9 @@ ttk.Label(root,
 
 areaOptions = ['Urban/Suburban', 'Open area']
 
-selectedAreaValue = ''
-
 
 def areaSelected(event):
-    selectedAreaValue = selectedArea.get()
+    selectedAreaValue.set(1 if selectedArea.get() == 'Urban/Suburban' else 2)
 
 
 selectedArea.set(areaOptions[0])
@@ -155,20 +153,24 @@ areaTypeOptionsMenu = OptionMenu(
 areaTypeOptionsMenu.config(width=15)
 areaTypeOptionsMenu.grid(column=2, row=11)
 
-# carrierFrequency = StringVar()
-# antennaheightT = StringVar()
-# antennaheightR = StringVar()
-# propagationDistance = StringVar()
-# selectedCity = StringVar()
-# selectedArea = StringVar()
-
 
 def getPathLoss():
-    ttk.Label(root, text=int(carrierFrequency.get())).grid(
-        column=1, row=12, padx=0, pady=10)
+    okamura_hata_model = OkamuraHataModel(
+        carrierierFrequency=int(carrierFrequency.get()),
+        heightTransmitter=int(antennaheightT.get()),
+        heightReceiver=int(antennaheightR.get()),
+        linkDistance=int(propagationDistance.get()),
+        city=selectedCityValue.get(),
+        area=selectedAreaValue.get()
+    )
+
+    ttk.Label(root,
+              text="Path loss (in dB):" + str(okamura_hata_model.pathLoss) + 'dB',
+              font=('Helvetica', 20),
+              foreground="black").grid(column=1, row=12, padx=20, pady=20)
 
 
-myButton = Button(root, text='Click me',
+myButton = Button(root, text='Get Path Loss',
                   command=getPathLoss, padx=10, fg='white', bg='blue')
 myButton.grid(column=1, row=15)
 
