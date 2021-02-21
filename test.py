@@ -5,6 +5,7 @@ from src.HataModel import OkamuraHataModel
 
 # from HataModel import OkamuraHataModel
 
+
 def get_carrier_freq():
     invalid = True
     f_c = 0.0
