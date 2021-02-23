@@ -35,7 +35,7 @@ def centerWindow(width, height=200):
     y = (screenHeight / 2) - (height / 2)
     root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
-centerWindow(750, 600)
+centerWindow(750, 630)
 
 frame1 = Frame(notebook, width=700, height=600, bg='blueviolet')
 frame2 = Frame(notebook, width=700, height=600, bg='chocolate')
@@ -67,6 +67,7 @@ totalArea = StringVar()
 frequencyReuseFactor = StringVar()
 radiusOfCell = StringVar()
 selectedCellType = StringVar()
+trafficChannel = StringVar()
 cellType1 = 'NB(Macro-cell): Radius of each cell(value: 1 to 20)km.'
 cellType2 = 'NB(Micro-cell): Radius of each cell(value: .1 to 1)km.'
 cellTypeValueInfo = StringVar(value=cellType1)
@@ -76,6 +77,7 @@ frame1Labels = [
     'Enter the all specified values',
     'Area size to cover (in km)',
     'Radius of each cell (in km)',
+    'Total traffic channels',
     'Frequency reuse facto(1,3,4,7,9,12,13,16,19,21..',
     'Select the cell type',
 ]
@@ -92,6 +94,8 @@ totalAreaFiled = createEntry(frame1, totalArea)
 totalAreaFiled.focus_force()
 radiusOfCellFiled = createEntry(frame1, radiusOfCell)
 radiusOfCellFiled.focus_force()
+trafficChannelFiled = createEntry(frame1, trafficChannel)
+trafficChannelFiled.focus_force()
 frequencyReuseField = createEntry(frame1, frequencyReuseFactor)
 frequencyReuseField.focus_force()
 
@@ -113,15 +117,16 @@ cellTypeOptionsMenu = OptionMenu(frame1, selectedCellType, *cellTypeOptions, com
 cellTypeOptionsMenu.config(width=15)
 
 # all input fields
-fields = [totalAreaFiled, radiusOfCellFiled, frequencyReuseField, cellTypeOptionsMenu]
-for i in range(4):
+fields = [totalAreaFiled, radiusOfCellFiled, trafficChannelFiled, frequencyReuseField, cellTypeOptionsMenu]
+for i in range(5):
     fields[i].grid(row=i + 1, column=2)
 
 def getAllValues():
     cell = Cell(
-        totalArea=int(totalArea.get()),
-        radiusOfCell=float(radiusOfCell.get()),
-        frequencyReuseFactor=int(frequencyReuseFactor.get())
+        totalArea = int(totalArea.get()),
+        radiusOfCell = float(radiusOfCell.get()),
+        trafficChannel = int(trafficChannel.get()),
+        frequencyReuseFactor = int(frequencyReuseFactor.get())
     )
 
     Label(frame1, bg='blueviolet', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
@@ -208,12 +213,12 @@ for i in range(6):
 
 def getPathLoss():
     okamuraHataModel = OkamuraHataModel(
-        carrierierFrequency=int(carrierFrequency.get()),
-        heightTransmitter=int(antennaheightT.get()),
-        heightReceiver=int(antennaheightR.get()),
-        linkDistance=int(propagationDistance.get()),
-        city=selectedCityValue.get(),
-        area=selectedAreaValue.get()
+        carrierierFrequency = int(carrierFrequency.get()),
+        heightTransmitter = int(antennaheightT.get()),
+        heightReceiver = int(antennaheightR.get()),
+        linkDistance = int(propagationDistance.get()),
+        city = selectedCityValue.get(),
+        area = selectedAreaValue.get()
     )
     Label(frame2, bg='chocolate', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
     Label(frame2,

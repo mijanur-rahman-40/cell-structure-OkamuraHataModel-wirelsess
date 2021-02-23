@@ -2,9 +2,10 @@ import math
 
 
 class Cell:
-    def __init__(self, totalArea, radiusOfCell, frequencyReuseFactor):
+    def __init__(self, totalArea, radiusOfCell, trafficChannel, frequencyReuseFactor):
         self.totalArea = totalArea
         self.radiusOfCell = radiusOfCell
+        self.trafficChannel = trafficChannel
         self.frequencyReuseFactor = frequencyReuseFactor
         self.numberOfCells = self.getNumberOfCells()
         self.numberOfChannelsPerCell = self.getNumberOfChannelsPerCell()
@@ -16,7 +17,7 @@ class Cell:
         return int((self.totalArea / areaOfEachCell) + .5)
 
     def getNumberOfChannelsPerCell(self):
-        return int((self.numberOfCells / self.frequencyReuseFactor) + .5)
+        return int((self.trafficChannel / self.frequencyReuseFactor) + .5)
 
     def getTotalCapacity(self):
         return self.numberOfCells * self.numberOfChannelsPerCell
