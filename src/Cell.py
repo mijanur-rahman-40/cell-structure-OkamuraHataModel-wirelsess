@@ -7,13 +7,13 @@ class Cell:
         # self.cellType = cellType
         self.radiusOfCell = radiusOfCell
         self.frequencyReuseFactor = frequencyReuseFactor
-        self.numberOfCells = self.get_numberOfCells()
+        self.numberOfCells = self.getNumberOfCells()
         self.numberOfChannelsPerCell = self.getNumberOfChannelsPerCell()
         self.totalCapacity = self.getTotalCapacity()
         self.totalNumberOfPossibleConcurrentCall = self.getTotalNumberOfConcurrentCall()
 
-    def get_numberOfCells(self):
-        areaOfEachCell = float(1.5 * math.sqrt(3)*math.pow(self.radiusOfCell, 2))
+    def getNumberOfCells(self):
+        areaOfEachCell = float(1.5 * math.sqrt(3) * math.pow(self.radiusOfCell, 2))
         return math.ceil(self.totalArea/areaOfEachCell)
 
     def getNumberOfChannelsPerCell(self):
