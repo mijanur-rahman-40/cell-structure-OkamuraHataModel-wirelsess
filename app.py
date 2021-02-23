@@ -123,18 +123,20 @@ def getAllValues():
         radiusOfCell=float(radiusOfCell.get()),
         frequencyReuseFactor=int(frequencyReuseFactor.get())
     )
+
+    Label(frame1, bg='blueviolet', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
     # show all output
-    Label(frame1,bg='blueviolet', text='Number of cells required : ' + str(cell.numberOfCells), font=outputTextFont, foreground='white').grid(row=11, column=1, padx=20, pady=2)
-    Label(frame1,bg='blueviolet', text='Number of channels per cell : ' + str(cell.numberOfChannelsPerCell), font=outputTextFont, foreground='white').grid(row=12, column=1, padx=20, pady=2)
-    Label(frame1,bg='blueviolet', text='Total channel capacity : ' + str(cell.totalCapacity), font=outputTextFont, foreground='white').grid(row=13, column=1, padx=20, pady=2)
-    Label(frame1,bg='blueviolet',text='Total number of possible concurrent call : ' + str(cell.totalNumberOfPossibleConcurrentCall), font=outputTextFont, foreground='white').grid(row=14, column=1, padx=20, pady=2)
+    Label(frame1, bg='blueviolet', text='Number of cells required : ' + str(cell.numberOfCells), font=outputTextFont, foreground='white').grid(row=12, column=1, padx=20, pady=2)
+    Label(frame1, bg='blueviolet', text='Number of channels per cell : ' + str(cell.numberOfChannelsPerCell), font=outputTextFont, foreground='white').grid(row=13, column=1, padx=20, pady=2)
+    Label(frame1, bg='blueviolet', text='Total channel capacity : ' + str(cell.totalCapacity), font=outputTextFont, foreground='white').grid(row=14, column=1, padx=20, pady=2)
+    Label(frame1, bg='blueviolet',text='Total number of possible concurrent call : ' + str(cell.totalNumberOfPossibleConcurrentCall), font=outputTextFont, foreground='white').grid(row=15, column=1, padx=20, pady=2)
 
 Button(frame1,
             text='Get all Outputs',
             command=getAllValues,
             fg='white', bg='chocolate',
             font=labelsfontTypeAndSize
-            ).grid(column=1, row=10, padx=20, pady=20)
+            ).grid(column=1, row=10, padx=20, pady=10)
             
 
 # --------------------- Frame2/Okumara/Hata model --------------------
@@ -213,18 +215,21 @@ def getPathLoss():
         city=selectedCityValue.get(),
         area=selectedAreaValue.get()
     )
+    Label(frame2, bg='chocolate', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
     Label(frame2,
-            text="Path loss (in dB):" +
+            text="Path loss (in dB) : " +
             str(okamuraHataModel.pathLoss) + 'dB',
             font=textFiledFont,
             bg='chocolate',
-            foreground="white").grid(column=1, row=12, padx=20, pady=20)
+            foreground="white").grid(column=1, row=13, padx=20, pady=20)
 
 Button(frame2,
             text='Get Path Loss',
             command=getPathLoss,
             fg='white', bg='blueviolet',
             font=labelsfontTypeAndSize
-            ).grid(column=1, row=10, padx=20, pady=20)
+            ).grid(column=1, row=10, padx=20, pady=10)
+
+
 
 root.mainloop()
