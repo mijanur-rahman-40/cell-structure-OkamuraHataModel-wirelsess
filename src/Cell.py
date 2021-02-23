@@ -4,7 +4,6 @@ import math
 class Cell:
     def __init__(self, totalArea, radiusOfCell, frequencyReuseFactor):
         self.totalArea = totalArea
-        # self.cellType = cellType
         self.radiusOfCell = radiusOfCell
         self.frequencyReuseFactor = frequencyReuseFactor
         self.numberOfCells = self.getNumberOfCells()
@@ -13,14 +12,14 @@ class Cell:
         self.totalNumberOfPossibleConcurrentCall = self.getTotalNumberOfConcurrentCall()
 
     def getNumberOfCells(self):
-        areaOfEachCell = float(1.5 * math.sqrt(3) * math.pow(self.radiusOfCell, 2))
-        return math.ceil(self.totalArea/areaOfEachCell)
+        areaOfEachCell = 1.5 * math.sqrt(3) * self.radiusOfCell ** 2
+        return int((self.totalArea / areaOfEachCell) + .5)
 
     def getNumberOfChannelsPerCell(self):
-        return 1
+        return int((self.numberOfCells / self.frequencyReuseFactor) + .5)
 
     def getTotalCapacity(self):
         return self.numberOfCells * self.numberOfChannelsPerCell
 
     def getTotalNumberOfConcurrentCall(self):
-        return 1
+        return self.totalCapacity
