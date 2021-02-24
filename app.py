@@ -252,6 +252,4 @@ Button(frame2,
             font=labelsfontTypeAndSize
             ).grid(column=1, row=15, padx=20, pady=10)
 
-
-
 root.mainloop()
