@@ -120,6 +120,7 @@ cellTypeOptionsMenu.config(width=15)
 
 # all input fields
 fields = [totalAreaFiled, radiusOfCellFiled, trafficChannelFiled, frequencyReuseField, cellTypeOptionsMenu]
+
 for i in range(5):
     fields[i].grid(row=i + 1, column=2)
 
