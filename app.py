@@ -17,8 +17,8 @@ style.configure('TEntry', foreground='green')
 style.theme_create( "yummy", parent="alt", settings={
         "TNotebook": {"configure": {"tabmargins": [0, 5, 5, 0] } },
         "TNotebook.Tab": {
-            "configure": {"padding": [5, 5], "background": 'chocolate', "foreground":"white" },
-            "map": {"background": [("selected", 'blueviolet')],
+            "configure": {"padding": [5, 5], "background": 'red', "foreground":"white" },
+            "map": {"background": [("selected", 'darkgreen')],
                           "expand": [("selected", [1, 1, 1, 0])] } } } )
 
 style.theme_use("yummy")
@@ -37,8 +37,8 @@ def centerWindow(width, height=200):
 
 centerWindow(750, 630)
 
-frame1 = Frame(notebook, width=700, height=600, bg='blueviolet')
-frame2 = Frame(notebook, width=700, height=600, bg='chocolate')
+frame1 = Frame(notebook, width=700, height=600, bg='darkgreen')
+frame2 = Frame(notebook, width=700, height=600, bg='red')
 
 notebook.pack(expand=1, fill="both")
 
@@ -67,9 +67,10 @@ totalArea = StringVar()
 frequencyReuseFactor = StringVar()
 radiusOfCell = StringVar()
 selectedCellType = StringVar()
+selectedCellTypeValue = IntVar(value=1)
 trafficChannel = StringVar()
-cellType1 = 'NB(Macro-cell): Radius of each cell(value: 1 to 20)km.'
-cellType2 = 'NB(Micro-cell): Radius of each cell(value: .1 to 1)km.'
+cellType1 = 'NB(Macro-cell) : Radius of each cell(value: 1 to 20)km.'
+cellType2 = 'NB(Micro-cell) : Radius of each cell(value: .1 to 1)km.'
 cellTypeValueInfo = StringVar(value=cellType1)
 
 # label texts
@@ -85,9 +86,9 @@ frame1Labels = [
 # all labels
 for i in range(len(frame1Labels)):
     if i == 0:
-        createLabel(frame1, 'blueviolet', frame1Labels[i], headingfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=15)
+        createLabel(frame1, 'darkgreen', frame1Labels[i], headingfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=15)
     else:
-        createLabel(frame1, 'blueviolet', frame1Labels[i], labelsfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=10) 
+        createLabel(frame1, 'darkgreen', frame1Labels[i], labelsfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=10) 
 
 # all input fields
 totalAreaFiled = createEntry(frame1, totalArea)
@@ -104,12 +105,14 @@ cellTypeOptions = ['Macro-cell', 'Micro-cell']
 
 # info text
 Label(frame1,
-    bg='blueviolet',
-    text=cellType1, font=labelsfontTypeAndSize, foreground='yellow').grid(row=8, column=1, padx=20, pady=15)
+    bg='darkgreen',
+    text=cellType1, font=labelsfontTypeAndSize, foreground='yellow').grid(row=7, column=1, padx=20, pady=10)
 
 def cellTypeSelected(event):
+    print(selectedCellType.get())
+    selectedCellTypeValue.set(1 if selectedCellType.get() == 'Macro-cell' else 2)
     # info text
-    Label(frame1, bg='blueviolet', text=cellType1 if selectedCellType.get() == 'Macro-cell' else cellType2, font=labelsfontTypeAndSize, foreground='yellow').grid(row=8, column=1, padx=20, pady=15)
+    Label(frame1, bg='darkgreen', text=cellType1 if selectedCellType.get() == 'Macro-cell' else cellType2, font=labelsfontTypeAndSize, foreground='yellow').grid(row=7, column=1, padx=20, pady=10)
    
 
 selectedCellType.set(cellTypeOptions[0])
@@ -122,24 +125,29 @@ for i in range(5):
     fields[i].grid(row=i + 1, column=2)
 
 def getAllValues():
-    cell = Cell(
-        totalArea = int(totalArea.get()),
-        radiusOfCell = float(radiusOfCell.get()),
-        trafficChannel = int(trafficChannel.get()),
-        frequencyReuseFactor = int(frequencyReuseFactor.get())
-    )
-
-    Label(frame1, bg='blueviolet', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
-    # show all output
-    Label(frame1, bg='blueviolet', text='Number of cells required : ' + str(cell.numberOfCells), font=outputTextFont, foreground='white').grid(row=12, column=1, padx=20, pady=2)
-    Label(frame1, bg='blueviolet', text='Number of channels per cell : ' + str(cell.numberOfChannelsPerCell), font=outputTextFont, foreground='white').grid(row=13, column=1, padx=20, pady=2)
-    Label(frame1, bg='blueviolet', text='Total channel capacity : ' + str(cell.totalCapacity), font=outputTextFont, foreground='white').grid(row=14, column=1, padx=20, pady=2)
-    Label(frame1, bg='blueviolet',text='Total number of possible concurrent call : ' + str(cell.totalNumberOfPossibleConcurrentCall), font=outputTextFont, foreground='white').grid(row=15, column=1, padx=20, pady=2)
+    if (selectedCellTypeValue.get() == 1) and (1.0 > float(radiusOfCell.get()) or 20.0 < float(radiusOfCell.get())):
+        Label(frame1, bg='blue', text='Cell radius must be between (1 to 20)', font=labelsfontTypeAndSize, foreground='wheat').grid(row=8, column=1, padx=20)
+    elif (selectedCellTypeValue.get() == 2) and (.1 > float(radiusOfCell.get()) or 1.0 < float(radiusOfCell.get())):
+        Label(frame1, bg='orange', text='Cell radius must be between (.1 to 1)', font=labelsfontTypeAndSize, foreground='wheat').grid(row=8, column=1, padx=20)
+    else:
+        Label(frame1, bg='darkgreen', text='Ok, you are correctly given cell radius. See the output', font=labelsfontTypeAndSize, foreground='wheat' ).grid(row=8, column=1, padx=20)
+        cell = Cell(
+            totalArea = int(totalArea.get()),
+            radiusOfCell = float(radiusOfCell.get()),
+            trafficChannel = int(trafficChannel.get()),
+            frequencyReuseFactor = int(frequencyReuseFactor.get())
+        )
+        Label(frame1, bg='darkgreen', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
+        # show all output
+        Label(frame1, bg='darkgreen', text='Number of cells required : ' + str(cell.numberOfCells), font=outputTextFont, foreground='white').grid(row=12, column=1, padx=20, pady=2)
+        Label(frame1, bg='darkgreen', text='Number of channels per cell : ' + str(cell.numberOfChannelsPerCell), font=outputTextFont, foreground='white').grid(row=13, column=1, padx=20, pady=2)
+        Label(frame1, bg='darkgreen', text='Total channel capacity : ' + str(cell.totalCapacity), font=outputTextFont, foreground='white').grid(row=14, column=1, padx=20, pady=2)
+        Label(frame1, bg='darkgreen',text='Total number of possible concurrent call : ' + str(cell.totalNumberOfPossibleConcurrentCall), font=outputTextFont, foreground='white').grid(row=15, column=1, padx=20, pady=2)
 
 Button(frame1,
             text='Get all Outputs',
             command=getAllValues,
-            fg='white', bg='chocolate',
+            fg='white', bg='red',
             font=labelsfontTypeAndSize
             ).grid(column=1, row=10, padx=20, pady=10)
             
@@ -170,9 +178,9 @@ frame2Labels = [
 # all labels
 for i in range(len(frame2Labels)):
     if i == 0:
-        createLabel(frame2, 'chocolate', frame2Labels[i], headingfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=15)
+        createLabel(frame2, 'red', frame2Labels[i], headingfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=15)
     else:
-        createLabel(frame2, 'chocolate', frame2Labels[i], labelsfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=10)  
+        createLabel(frame2, 'red', frame2Labels[i], labelsfontTypeAndSize).grid(row=i, column=1, sticky='W', padx=20, pady=10)  
 
 # all input fields
 carrierFrequencyField = createEntry(frame2, carrierFrequency)
@@ -212,28 +220,38 @@ for i in range(6):
     fields[i].grid(row=i + 1, column=2)
 
 def getPathLoss():
-    okamuraHataModel = OkamuraHataModel(
+    if (150 > int(carrierFrequency.get())) or (1500 < int(carrierFrequency.get())):
+        Label(frame2, bg='blue', text='Carrier F must be between(150 to 1500)', font=labelsfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
+    elif (30 > int(antennaheightT.get())) or (300 < int(antennaheightT.get())):
+        Label(frame2, bg='green', text='T antenna height must be between(30 to 300)', font=labelsfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
+    elif (1 > int(antennaheightR.get())) or (10 < int(antennaheightR.get())):
+        Label(frame2, bg='orange', text='Receiver antenna height must be between(1 to 10)', font=labelsfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
+    elif (1 > int(propagationDistance.get())) or (20 < int(propagationDistance.get())):
+        Label(frame2, bg='gray', text='Propagation distance always must be between(1 to 20)', font=labelsfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
+    else:
+        Label(frame2, bg='red', text='Ok, you are correctly given all inputs. See the output', font=labelsfontTypeAndSize, foreground='wheat' ).grid(row=11, column=1, padx=20)
+        okamuraHataModel = OkamuraHataModel(
         carrierierFrequency = int(carrierFrequency.get()),
         heightTransmitter = int(antennaheightT.get()),
         heightReceiver = int(antennaheightR.get()),
         linkDistance = int(propagationDistance.get()),
         city = selectedCityValue.get(),
         area = selectedAreaValue.get()
-    )
-    Label(frame2, bg='chocolate', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=11, column=1, padx=20)
-    Label(frame2,
+        )
+        Label(frame2, bg='red', text='Outputs', font=headingfontTypeAndSize, foreground='white').grid(row=16, column=1, padx=20)
+        Label(frame2,
             text="Path loss (in dB) : " +
             str(okamuraHataModel.pathLoss) + 'dB',
             font=textFiledFont,
-            bg='chocolate',
-            foreground="white").grid(column=1, row=13, padx=20, pady=20)
+            bg='red',
+            foreground="white").grid(column=1, row=17, padx=20, pady=20)
 
 Button(frame2,
             text='Get Path Loss',
             command=getPathLoss,
-            fg='white', bg='blueviolet',
+            fg='white', bg='darkgreen',
             font=labelsfontTypeAndSize
-            ).grid(column=1, row=10, padx=20, pady=10)
+            ).grid(column=1, row=15, padx=20, pady=10)
 
 
 
