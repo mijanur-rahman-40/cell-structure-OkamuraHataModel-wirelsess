@@ -109,7 +109,6 @@ Label(frame1,
     text=cellType1, font=labelsfontTypeAndSize, foreground='yellow').grid(row=7, column=1, padx=20, pady=10)
 
 def cellTypeSelected(event):
-    print(selectedCellType.get())
     selectedCellTypeValue.set(1 if selectedCellType.get() == 'Macro-cell' else 2)
     # info text
     Label(frame1, bg='darkgreen', text=cellType1 if selectedCellType.get() == 'Macro-cell' else cellType2, font=labelsfontTypeAndSize, foreground='yellow').grid(row=7, column=1, padx=20, pady=10)
