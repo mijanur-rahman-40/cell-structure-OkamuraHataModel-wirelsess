@@ -79,7 +79,7 @@ frame1Labels = [
     'Area size to cover (in km)',
     'Radius of each cell (in km)',
     'Total traffic channels',
-    'Frequency reuse facto(1,3,4,7,9,12,13,16,19,21..',
+    'Frequency reuse factor(1,3,4,7,9,12,13,16,19,21..',
     'Select the cell type',
 ]
 
